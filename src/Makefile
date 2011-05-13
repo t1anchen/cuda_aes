@@ -1,0 +1,13 @@
+NVCC = nvcc
+OBJS = helloworld.o
+BINS = helloworld
+
+all: $(BINS)
+
+helloworld: helloworld.o
+	$(NVCC) -o $@ $^
+helloworld.o: helloworld.cu
+	$(NVCC) -c -o $@ $^
+
+clean:
+	rm -vf $(OBJS) $(BINS)
