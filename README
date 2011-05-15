@@ -2,3 +2,12 @@ au9cuda_aes
 ===========
 
 This is a course assignment of Network Security Essential Course
+
+About NVIDIA CUDA Installation on Ubuntu 10.10
+==============================================
+1. Press Ctrl + Alt + F1 to switch your workplace from gdm to plain txt tty
+2. Type `sudo gdm stop` to make gdm stop
+3. `sudo apt-get --purge remove nvidia*'
+   Note: This step is very important! Because if not, you'll find Ubuntu 
+         will recover the kernel module and Xorg configuration file once
+	 you reboot.
