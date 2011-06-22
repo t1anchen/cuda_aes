@@ -1,6 +1,7 @@
 NVCC = nvcc
+NVCCFLAGS = -G -g -deviceemu
 OBJS = helloworld.o aes.o main.o
-BINS = helloworld aes
+BINS = helloworld au9aes
 
 all: $(BINS)
 
@@ -9,12 +10,12 @@ helloworld: helloworld.o
 helloworld.o: helloworld.cu
 	$(NVCC) -c -o $@ $^
 
-aes: main.o aes.o
+au9aes: main.o aes.o
 	$(NVCC) -o $@ $^
 main.o: main.cu aes.h
-	$(NVCC) -c $< -o $@
+	$(NVCC) $(NVCCFLAGS) -c $< -o $@
 aes.o: aes.cu aes.h
-	$(NVCC) -c $< -o $@
+	$(NVCC) $(NVCCFLAGS) -c $< -o $@
 
 clean:
 	rm -vf $(OBJS) $(BINS)

@@ -98,7 +98,8 @@ typedef signed int aca_ssize_t;
   ((x) = (((x) << 8) | ((x) >> 24) & 0xffffffffUL))
 #endif
 
-#define xtime(x) ((x<<1) ^ (((x>>7) & 1) * 0x1b))
+#define xtime_byte(x) ((x<<1) ^ (((x>>7) & 1) * 0x1b))
+#define xtime_word(x) ((((x) & 0x7f7f7f7fU) << 1) ^ ((((x) & 0x80808080U) >> 7) * 0x1b))
 
 /* Errno Specification */
 #ifndef ACA_ERRNO
@@ -119,22 +120,20 @@ enum aca_op_t {
 };
 #endif
 
-/* Method Specification */
-/* aca_errno_t aca_scheduled_mem_init(aca_byte_t *sched); */
-/* aca_errno_t aca_scheduled_mem_destory(aca_byte_t *sched); */
-/* aca_errno_t aca_u32s_to_bytes(aca_byte_t *dst, const aca_word_t *src); */
-/* aca_errno_t aca_bytes_to_u32s(aca_word_t *dst, const aca_byte_t *src); */
-/* aca_errno_t aca_make_key(aca_word_t *dst, const aca_byte_t *src, aca_word_t key_bitsize, aca_op_t ops); */
-aca_errno_t aca_encrypt(aca_word_t *dst, const aca_word_t *src, aca_op_t ops);
-aca_errno_t aca_decrypt(aca_word_t *dst, const aca_word_t *src, aca_op_t ops);
-
-/* Operation Details */
-aca_errno_t aca_key_expansion(aca_word_t *w, aca_word_t *key, aca_size_t key_len, aca_size_t Nk, aca_size_t Nr);
-aca_errno_t aca_inverse_cipher(aca_byte_t *dst, const aca_byte_t *src, const aca_word_t *W);
+/* interfaces */
+void aca_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t* W, aca_size_t Nk, aca_size_t Nr);
 __global__ void aca_sub_bytes(aca_word_t *state);
+__global__ void aca_inv_sub_bytes(aca_word_t *state);
 __global__ void aca_shift_rows(aca_word_t *state);
+__global__ void aca_inv_shift_rows(aca_word_t * state);
 __global__ void aca_mix_colomns(aca_word_t *state);
-__device__ void aca_add_round_key(aca_word_t *state, aca_word_t *key);
+__global__ void aca_inv_mix_colomns(aca_word_t *state);
+__global__ void aca_add_round_key(aca_word_t *state, aca_word_t *key);
+void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr);
+void aca_aes_decrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr);
+void aca_aes_encrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize);
+void aca_aes_decrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize);
+
 
 #endif	/* AU9CUDA_AES_H */
 
