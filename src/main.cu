@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <errno.h>
 #include <unistd.h>
 #include "aes.h"
@@ -14,42 +15,63 @@ int main(int argc, char *argv[])
 {
   int i;
   aca_word_t ct[16], *key, *pt, key_size, pt_size;
+  char key_buf[100], *key_str, *pt_str;
+  char pt_buf[100];
+
 
   /* check the number of args */
-  if(argc < 4){
-    fprintf(stderr, "USAGE: %s -[e|d] <key> <txt>\n", argv[0]);
+  if(argc < 2){
+    fprintf(stderr, "USAGE: %s -[e|d]\n", argv[0]);
     exit(1);
   }
 
-  /* check the validation of args */
-  for(i = 0; i < 4; i++){
-    if(argv[i] == NULL){
-      fprintf(stderr, "%s: argv[%d]: %s", argv[0], i, strerror(EINVAL));
-      exit(1);
-    }
-  }
-
-  /* convert string to bytes */
-  key_size = my_str2bytes(&key, argv[2]);
-  pt_size = my_str2bytes(&pt, argv[3]);
-
-  /* check key */
-  if(key_size != 16 && key_size != 24 && key_size != 32){
-    fprintf(stderr, "%s: key_size: %s\n", argv[0], strerror(EINVAL));
-    exit(1);
-  }
-  if(pt_size != 16){
-    fprintf(stderr, "%s: Invalid AES block size.\n", argv[0]);
-    exit(1);
-  }
-
-  /* choose mode: encryption or decryption */
+   /* choose mode: encryption or decryption */
   switch(argv[1][1]){
   case 'e':
+    freopen("../test/enc.in", "r", stdin);
+    freopen("../test/enc.out", "w", stdout);
+    memset(key_buf, 0, 100);
+    memset(pt_buf, 0, 100);
+    scanf("%s", &key_buf);
+    scanf("%s", &pt_buf);
+    key_str = (char *)malloc(strlen(key_buf));
+    memcpy(key_str, key_buf, strlen(key_buf));
+    pt_str = (char *)malloc(strlen(key_buf));
+    memcpy(pt_str, pt_buf, strlen(pt_buf)); 
+    key_size = my_str2bytes(&key, key_str);
+    pt_size = my_str2bytes(&pt, pt_str);
+    if(key_size != 16 && key_size != 24 && key_size != 32){
+      fprintf(stderr, "%s: key_size: %s\n", argv[0], strerror(EINVAL));
+      exit(1);
+    }
+    if(pt_size != 16){
+      fprintf(stderr, "%s: Invalid AES block size.\n", argv[0]);
+      exit(1);
+    }
     aca_aes_encrypt(pt, key, ct, key_size << 3);
     my_print_hexbytes(ct, 16);
     break;
   case 'd':
+    freopen("../test/dec.in", "r", stdin);
+    freopen("../test/dec.out", "w", stdout);
+    memset(key_buf, 0, 100);
+    memset(pt_buf, 0, 100);
+    scanf("%s", &key_buf);
+    scanf("%s", &pt_buf);
+    key_str = (char *)malloc(strlen(key_buf));
+    memcpy(key_str, key_buf, strlen(key_buf));
+    pt_str = (char *)malloc(strlen(key_buf));
+    memcpy(pt_str, pt_buf, strlen(pt_buf)); 
+    key_size = my_str2bytes(&key, key_str);
+    pt_size = my_str2bytes(&pt, pt_str);
+    if(key_size != 16 && key_size != 24 && key_size != 32){
+      fprintf(stderr, "%s: key_size: %s\n", argv[0], strerror(EINVAL));
+      exit(1);
+    }
+    if(pt_size != 16){
+      fprintf(stderr, "%s: Invalid AES block size.\n", argv[0]);
+      exit(1);
+    }
     aca_aes_decrypt(pt, key, ct, key_size << 3);
     my_print_hexbytes(ct, 16);
     break;
@@ -57,6 +79,9 @@ int main(int argc, char *argv[])
     return EINVAL;
   }
 
+  /* garbage collection */
+  free(key_str);
+  free(pt_str);
   return 0;
 }
 

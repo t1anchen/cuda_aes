@@ -12,6 +12,7 @@ typedef unsigned char aca_byte_t;
 typedef unsigned int aca_word_t;
 typedef unsigned int aca_size_t;
 typedef signed int aca_ssize_t;
+typedef unsigned int u32;
 #endif	
 
 /* Define data blocksize */

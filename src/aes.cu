@@ -9,6 +9,8 @@ static const aca_word_t Rcon[] = { 0, 0x01000000, 0x02000000, 0x04000000, 0x0800
 #define ror32(w,shift)				\
   (((w) >> (shift)) | ((w) << (32 - (shift))))
 
+#define aca_shift(r,nb) ((r)%(nb))
+
 #define GET(M,X,Y) ((M)[((Y) << 2) + (X)])
 
 const aca_size_t size = 4 * 4 * sizeof(aca_word_t);
@@ -24,7 +26,7 @@ void my_cp_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len)
 {
   aca_size_t i;
   for(i = 0; i < bytes_len; i++)
-    printf("%02X", bytes[i]);
+    printf("%X", bytes[i]);
   printf("\n");
 }
 
@@ -64,7 +66,7 @@ __global__ void aca_inv_shift_rows(aca_word_t * state)
 
 }
 
-__global__ void aca_mix_colomns(aca_word_t *state)
+__global__ void aca_mix_columns(aca_word_t *state)
 {
   aca_word_t col  = threadIdx.x;
   aca_word_t base = col << 2;
@@ -78,25 +80,36 @@ __global__ void aca_mix_colomns(aca_word_t *state)
   Tm = state[base + 3] ^ t;      Tm = xtime_byte(Tm) & 0xff; state[base + 3] ^= Tm ^ Tmp;
 }
 
-__global__ void aca_inv_mix_colomns(aca_word_t *state)
+__global__ void aca_inv_mix_columns(aca_word_t *state)
 {
   aca_word_t col = threadIdx.x;
   aca_word_t base = col << 2;
-  aca_word_t buf=0,t,u,v,w,y;
+  aca_word_t t, Tmp, Tm;
+  aca_word_t u, v, w;
 
-  buf = (state[base] & 0xff) | ((state[base + 1] & 0xff) << 8) | ((state[base + 2] & 0xff) << 16) | ((state[base + 3]) << 24);
+  u = state[base];
+  v = xtime_byte(u);
+  w = xtime_byte(v);
+  t = w ^ state[base];
+  t = t ^ state[base];
 
-  u = xtime_word(buf);
-  v = xtime_word(u);
-  w = xtime_word(v);
-  t = w ^ buf;
-  y = u ^ v ^ w;
-  y ^= ror32(u ^ t, 8) ^ ror32(v ^ t, 16) ^ ror32(t, 24);
 
-  state[base] = y & 0xffU;
-  state[base + 1] = (y & 0xff00U) >> 8;
-  state[base + 2] = (y & 0xff0000U) >> 16;
-  state[base + 3] = (y & 0xff000000U) >> 24;
+  /* aca_word_t buf=0,t,u,v,w,y; */
+
+
+  /* buf = (state[base] & 0xff) | ((state[base + 1] & 0xff) << 8) | ((state[base + 2] & 0xff) << 16) | ((state[base + 3]) << 24); */
+
+  /* u = xtime_word(buf); */
+  /* v = xtime_word(u); */
+  /* w = xtime_word(v); */
+  /* t = w ^ buf; */
+  /* y = u ^ v ^ w; */
+  /* y ^= ror32(u ^ t, 8) ^ ror32(v ^ t, 16) ^ ror32(t, 24); */
+
+  /* state[base] = y & 0xffU; */
+  /* state[base + 1] = (y & 0xff00U) >> 8; */
+  /* state[base + 2] = (y & 0xff0000U) >> 16; */
+  /* state[base + 3] = (y & 0xff000000U) >> 24; */
 }
 
 __global__ void aca_add_round_key(aca_word_t *state, aca_word_t *key)
@@ -185,7 +198,7 @@ void aca_inv_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, a
   }
 
   for(i = 1; i < Nr; i++)
-    aca_inv_mix_colomns<<<1,4>>>(W+(i<<4));
+    aca_inv_mix_columns<<<1,4>>>(W+(i<<4));
 
 
 }
@@ -197,7 +210,7 @@ void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
   for(i = 1; i < Nr; i++) {
     aca_sub_bytes<<<1,16>>>(cp);
     aca_shift_rows<<<1,4>>>(cp);
-    aca_mix_colomns<<<1,4>>>(cp);
+    aca_mix_columns<<<1,4>>>(cp);
     aca_add_round_key<<<1,16>>>(cp, cW+(i << 4));
   }
   aca_sub_bytes<<<1,16>>>(cp);
@@ -212,7 +225,7 @@ void aca_aes_decrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
   for(i = Nr-1; i >=1; i--) {
     aca_inv_sub_bytes<<<1,16>>>(cp);
     aca_inv_shift_rows<<<1,4>>>(cp);
-    aca_inv_mix_colomns<<<1,4>>>(cp);
+    aca_inv_mix_columns<<<1,4>>>(cp);
     aca_add_round_key<<<1,16>>>(cp, cW+(i << 4));
   }
   aca_inv_sub_bytes<<<1,16>>>(cp);
