@@ -148,6 +148,48 @@ void aca_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, aca_s
 
 }
 
+void aca_inv_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, aca_size_t Nk, aca_size_t Nr)
+{
+  uint i, j, cols, temp, tmp[4];
+  cols = (Nr + 1) << 2;
+
+  memcpy(W, key, (key_len >> 3)*sizeof(uint));
+
+  for(i=Nk; i<cols; i++) {
+    for(j=0; j<4; j++)
+      tmp[j] = GET(W, j, i-1);
+    if(Nk > 6) {
+      if(i % Nk == 0) {
+	temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
+	tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
+	tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
+	tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
+	tmp[3] = temp;
+      } else if(i % Nk == 4) {
+	tmp[0] = hsbox[tmp[0]];
+	tmp[1] = hsbox[tmp[1]];
+	tmp[2] = hsbox[tmp[2]];
+	tmp[3] = hsbox[tmp[3]];
+      }
+    } else {
+      if(i % Nk == 0) {
+	temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
+	tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
+	tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
+	tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
+	tmp[3] = temp;
+      }
+    }
+    for(j=0; j<4; j++)
+      GET(W, j, i) = GET(W, j, i-Nk) ^ tmp[j];
+  }
+
+  for(i = 1; i < Nr; i++)
+    aca_inv_mix_colomns<<<1,4>>>(W+(i<<4));
+
+
+}
+
 void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
 {
   aca_word_t i;
@@ -166,25 +208,16 @@ void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
 void aca_aes_decrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
 {
   aca_word_t i;
-  aca_add_round_key<<<1,16>>>(cp, cW);
-  my_cp_print_hexbytes(cp, 16);
-  for(i = 1; i < Nr; i++) {
-    printf("round %d:\n", i);
-    aca_inv_shift_rows<<<1,4>>>(cp);
-    printf("inv_shift_rows: ");my_cp_print_hexbytes(cp, 16);
+  aca_add_round_key<<<1,16>>>(cp, cW+(Nr<<4));
+  for(i = Nr-1; i >=1; i--) {
     aca_inv_sub_bytes<<<1,16>>>(cp);
-    printf("inv_sub_bytes: ");my_cp_print_hexbytes(cp, 16);
-    aca_add_round_key<<<1,16>>>(cp, cW+(i << 4));
-    printf("add_round_key: ");my_cp_print_hexbytes(cp, 16);
+    aca_inv_shift_rows<<<1,4>>>(cp);
     aca_inv_mix_colomns<<<1,4>>>(cp);
-    printf("inv_mix_columns: ");my_cp_print_hexbytes(cp, 16);
+    aca_add_round_key<<<1,16>>>(cp, cW+(i << 4));
   }
-  aca_inv_shift_rows<<<1,4>>>(cp);
-  my_cp_print_hexbytes(cp, 16);
   aca_inv_sub_bytes<<<1,16>>>(cp);
-  my_cp_print_hexbytes(cp, 16);
-  aca_add_round_key<<<1,16>>>(cp, cW+(i << 4));
-  my_cp_print_hexbytes(cp, 16);
+  aca_inv_shift_rows<<<1,4>>>(cp);
+  aca_add_round_key<<<1,16>>>(cp, cW);
 }
 
 void aca_aes_encrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize)
@@ -216,7 +249,7 @@ void aca_aes_decrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t
   aca_word_t s = ((Nr+1) * sizeof(aca_word_t)) << 4;
   W = (aca_word_t *)malloc(s);
   cudaMalloc((void**)&cW, s);
-  aca_key_expansion(key, keysize, W, Nk, Nr);
+  aca_inv_key_expansion(key, keysize, W, Nk, Nr);
   cudaMemcpy(cW, W, s, cudaMemcpyHostToDevice);
 
   cudaMalloc((void**)&cp, size);
