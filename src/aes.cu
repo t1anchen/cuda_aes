@@ -84,15 +84,37 @@ __global__ void aca_inv_mix_columns(aca_word_t *state)
 {
   aca_word_t col = threadIdx.x;
   aca_word_t base = col << 2;
-  aca_word_t t, Tmp, Tm;
+  aca_word_t t, Tmp;
   aca_word_t u, v, w;
 
-  u = state[base];
-  v = xtime_byte(u);
-  w = xtime_byte(v);
-  t = w ^ state[base];
-  t = t ^ state[base];
+  Tmp = state[base] ^ state[base + 1] ^ state[base + 2] ^ state[base + 3];
+  u = xtime_byte(Tmp) & 0xff;
+  v = xtime_byte(u) & 0xff;
+  w = xtime_byte(v) & 0xff;
 
+  t = w ^ Tmp;
+  t ^= (xtime_byte((xtime_byte(state[base]) & 0xff)) & 0xff) ^ state[base];
+  t ^= (xtime_byte(state[base + 1]) & 0xff);
+  t ^= (xtime_byte((xtime_byte(state[base + 2]) & 0xff)) & 0xff);
+  state[base] = t;
+
+  t = w ^ Tmp;
+  t ^= (xtime_byte((xtime_byte(state[base+1]) & 0xff)) & 0xff) ^ state[base+1];
+  t ^= (xtime_byte(state[base+2]) & 0xff);
+  t ^= (xtime_byte((xtime_byte(state[base+3]) & 0xff)) & 0xff);
+  state[base+1] = t;
+
+  t = w ^ Tmp;
+  t ^= (xtime_byte((xtime_byte(state[base+2]) & 0xff)) & 0xff) ^ state[base+2];
+  t ^= (xtime_byte(state[base + 3]) & 0xff);
+  t ^= (xtime_byte((xtime_byte(state[base]) & 0xff)) & 0xff);
+  state[base+2] = t;
+
+  t = w ^ Tmp;
+  t ^= (xtime_byte((xtime_byte(state[base+3]) & 0xff)) & 0xff) ^ state[base+3];
+  t ^= (xtime_byte(state[base]) & 0xff);
+  t ^= (xtime_byte((xtime_byte(state[base+1]) & 0xff)) & 0xff);
+  state[base+3] = t;
 
   /* aca_word_t buf=0,t,u,v,w,y; */
 
@@ -173,23 +195,23 @@ void aca_inv_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, a
       tmp[j] = GET(W, j, i-1);
     if(Nk > 6) {
       if(i % Nk == 0) {
-	temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
-	tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
-	tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
-	tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
+	temp   = inv_hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
+	tmp[0] = inv_hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
+	tmp[1] = inv_hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
+	tmp[2] = inv_hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
 	tmp[3] = temp;
       } else if(i % Nk == 4) {
-	tmp[0] = hsbox[tmp[0]];
-	tmp[1] = hsbox[tmp[1]];
-	tmp[2] = hsbox[tmp[2]];
-	tmp[3] = hsbox[tmp[3]];
+	tmp[0] = inv_hsbox[tmp[0]];
+	tmp[1] = inv_hsbox[tmp[1]];
+	tmp[2] = inv_hsbox[tmp[2]];
+	tmp[3] = inv_hsbox[tmp[3]];
       }
     } else {
       if(i % Nk == 0) {
-	temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
-	tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
-	tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
-	tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
+	temp   = inv_hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
+	tmp[0] = inv_hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
+	tmp[1] = inv_hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
+	tmp[2] = inv_hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
 	tmp[3] = temp;
       }
     }
@@ -198,7 +220,7 @@ void aca_inv_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, a
   }
 
   for(i = 1; i < Nr; i++)
-    aca_inv_mix_columns<<<1,4>>>(W+(i<<4));
+    aca_inv_mix_columns<<<1,cols>>>(W);
 
 
 }
