@@ -1,0 +1,17 @@
+= au9cuda_aes
+Tianchen Shao
+duke.augustine@gmail.com
+
+== General
+This project aims to provide a CUDA-based AES implementation.  However there are lots of similar mature implemented ones on the Internet, I just do it for practice after all.  So, any benefit ideas are welcomed.
+
+== Essential
+.Encryption
+[code,c]
+---------------------------
+$ au9aes -e
+000102030405060708090a0b0c0d0e0f
+00112233445566778899aabbccddeeff
+
+69C4E0D86A7B0430D8CDB78070B4C55A
+---------------------------
