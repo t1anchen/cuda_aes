@@ -25,8 +25,11 @@ const aca_size_t Nb = 4;
 void my_cp_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len)
 {
   aca_size_t i;
-  for(i = 0; i < bytes_len; i++)
-    printf("%X", bytes[i]);
+  for(i = 0; i < bytes_len; i++){
+    printf("%02x", bytes[i]);
+    if(!(i%16))
+      printf("\n");
+  }
   printf("\n");
 }
 
@@ -186,6 +189,9 @@ void aca_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, aca_s
 void aca_inv_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, aca_size_t Nk, aca_size_t Nr)
 {
   uint i, j, cols, temp, tmp[4];
+  aca_word_t *cW_tmp;
+  aca_size_t cW_tmp_size;
+
   cols = (Nr + 1) << 2;
 
   memcpy(W, key, (key_len >> 3)*sizeof(uint));
@@ -219,10 +225,25 @@ void aca_inv_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, a
       GET(W, j, i) = GET(W, j, i-Nk) ^ tmp[j];
   }
 
+  /* IMPORTANT:
+   * W should be handled in GPU memory, 
+   * so cW_tmp should be created here to
+   * be as a temperary copy in GPU 
+   */
+  cW_tmp_size = ((Nr + 1) * sizeof(aca_word_t)) << 2;
+  cudaMalloc((void**)&cW_tmp, cW_tmp_size);
+  cudaMemcpy(cW_tmp, W, cW_tmp_size, cudaMemcpyHostToDevice);
+
   for(i = 1; i < Nr; i++)
-    aca_inv_mix_columns<<<1,cols>>>(W);
+    aca_inv_mix_columns<<<1,(cols>>2)>>>(cW_tmp);
 
+  memset(W, 0, cW_tmp_size);
+  cudaMemcpy(W, cW_tmp, cW_tmp_size, cudaMemcpyDeviceToHost);
 
+  /* If debug flag defined,
+   * it will output the contents of W
+   */
+  my_cp_print_hexbytes(W, cW_tmp_size);
 }
 
 void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)

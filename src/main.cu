@@ -100,6 +100,6 @@ void my_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len)
 {
   aca_size_t i;
   for(i = 0; i < bytes_len; i++)
-    printf("%02X", bytes[i]);
+    printf("%02x", bytes[i]);
   printf("\n");
 }
