@@ -13,11 +13,13 @@ void my_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len);
 
 int main(int argc, char *argv[])
 {
-  int i;
   aca_word_t ct[16], *key, *pt, key_size, pt_size;
-  char key_buf[100], *key_str, *pt_str;
-  char pt_buf[100];
+  char *key_buf, *key_str, *pt_str;
+  char *pt_buf;
 
+  /* initialize buffers */
+  key_buf = (char *)malloc(100 * sizeof(char));
+  pt_buf = (char *)malloc(100 * sizeof(char));
 
   /* check the number of args */
   if(argc < 2){
@@ -32,8 +34,8 @@ int main(int argc, char *argv[])
     freopen("../test/enc.out", "w", stdout);
     memset(key_buf, 0, 100);
     memset(pt_buf, 0, 100);
-    scanf("%s", &key_buf);
-    scanf("%s", &pt_buf);
+    scanf("%s", key_buf);
+    scanf("%s", pt_buf);
     key_str = (char *)malloc(strlen(key_buf));
     memcpy(key_str, key_buf, strlen(key_buf));
     pt_str = (char *)malloc(strlen(key_buf));
@@ -56,8 +58,8 @@ int main(int argc, char *argv[])
     freopen("../test/dec.out", "w", stdout);
     memset(key_buf, 0, 100);
     memset(pt_buf, 0, 100);
-    scanf("%s", &key_buf);
-    scanf("%s", &pt_buf);
+    scanf("%s", key_buf);
+    scanf("%s", pt_buf);
     key_str = (char *)malloc(strlen(key_buf));
     memcpy(key_str, key_buf, strlen(key_buf));
     pt_str = (char *)malloc(strlen(key_buf));
@@ -80,26 +82,9 @@ int main(int argc, char *argv[])
   }
 
   /* garbage collection */
+  free(key_buf);
+  free(pt_buf);
   free(key_str);
   free(pt_str);
   return 0;
-}
-
-aca_size_t my_str2bytes(aca_word_t **dst, const char *src)
-{
-  aca_word_t i, len = strlen(src) >> 1;
-  *dst = (aca_word_t *)malloc(len * sizeof(aca_word_t));
-
-  for(i = 0; i < len; i++)
-    sscanf(src + i*2, "%02X", *dst + i);
-
-  return len;
-}
-
-void my_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len)
-{
-  aca_size_t i;
-  for(i = 0; i < bytes_len; i++)
-    printf("%02x", bytes[i]);
-  printf("\n");
 }

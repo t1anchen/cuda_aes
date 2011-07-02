@@ -2,7 +2,7 @@
 
 NAME
 ----
-au9cuda_aes - a CUDA-based AES implementation
+au9cuda_aes - a CUDA-based AES Implementation
 
 SYNOPSIS
 --------
