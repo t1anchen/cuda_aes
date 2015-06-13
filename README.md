@@ -7,7 +7,7 @@ This prject comes from a fork of [cbguder](https://github.com/cbguder)'s [aes-on
 This project is released under [The BSD 3-Clause License](http://www.opensource.org/licenses/BSD-3-Clause).
 
 ## CUDA Compatibility
->= CUDA 5.5 on Ubuntu 14.04
+CUDA >= 5.5 on Ubuntu 14.04
 
 ### About NVIDIA CUDA Installation on Ubuntu 10.10
 1. Press `Ctrl + Alt + F1` to switch your workplace from gdm to plain txt tty
