@@ -1,3 +1,5 @@
+#include "key_expansion.h"
+#include "utils.h"
 #include "aes.h"
 #include "aes.tab"
 

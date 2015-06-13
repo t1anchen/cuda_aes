@@ -23,13 +23,13 @@ au9aes: add_round_key.o \
 	utils.o
 	$(NVCC) -o $@ $^
 
-add_round_key.o: add_round_key.cu aes.h
+add_round_key.o: add_round_key.cu 
 	$(NVCC) $(NVCCFLAGS) -c $<
-cipher.o: cipher.cu aes.h
+cipher.o: cipher.cu
 	$(NVCC) $(NVCCFLAGS) -c $<
-key_expansion.o: key_expansion.cu aes.h
+key_expansion.o: key_expansion.cu
 	$(NVCC) $(NVCCFLAGS) -c $<
-main.o: main.cu aes.h
+main.o: main.cu cipher.h utils.h
 	$(NVCC) $(NVCCFLAGS) -c $<
 mix_columns.o: mix_columns.cu aes.h
 	$(NVCC) $(NVCCFLAGS) -c $<
@@ -37,7 +37,7 @@ shift_rows.o: shift_rows.cu aes.h
 	$(NVCC) $(NVCCFLAGS) -c $<
 sub_bytes.o: sub_bytes.cu aes.h
 	$(NVCC) $(NVCCFLAGS) -c $<
-utils.o: utils.cu aes.h
+utils.o: utils.cu utils.h
 	$(NVCC) $(NVCCFLAGS) -c $<
 
 clean:

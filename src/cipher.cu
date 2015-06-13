@@ -1,6 +1,8 @@
+#include "cipher.h"
+#include "key_expansion.h"
 #include "aes.h"
 
-void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
+static void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
 {
   aca_word_t i;
   aca_add_round_key<<<1,16>>>(cp, cW);
@@ -15,7 +17,7 @@ void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
   aca_add_round_key<<<1,16>>>(cp, cW+(i << 4));
 }
 
-void aca_aes_decrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
+static void aca_aes_decrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
 {
   aca_word_t i;
   aca_add_round_key<<<1,16>>>(cp, cW);

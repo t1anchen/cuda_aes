@@ -3,7 +3,9 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-#include "aes.h"
+#include "commons.h"
+#include "cipher.h"
+#include "utils.h"
 
 #ifndef __AU9_AES_MAIN__
 #define __AU9_AES_MAIN__
