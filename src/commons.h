@@ -1,5 +1,5 @@
-#ifndef AU9CUDA_AES_H
-#define AU9CUDA_AES_H
+#ifndef ACA_CUDA_AES_COMMONS_H
+#define ACA_CUDA_AES_COMMONS_H
 
 
 /* 
@@ -68,8 +68,6 @@ typedef unsigned char u8;
 #endif
 #define ACA_MAX_NR 14
 
-const aca_size_t size = 4 * 4 * sizeof(aca_word_t);
-const aca_size_t Nb = 4;
 
 
 /*
@@ -93,8 +91,8 @@ const aca_size_t Nb = 4;
 /*
  * Errno Specification 
  */
-#ifndef ACA_ERRNO
-#define ACA_ERRNO
+#ifndef ACA_CUDA_AES_ERRNO_H
+#define ACA_CUDA_AES_ERRNO_H
 enum aca_errno_t {
   NORMAL = 0,
   ABNORMAL = 1
@@ -107,7 +105,7 @@ enum aca_op_t {
   ECB_MODE   = 8,
   ASYNC_MODE = 16
 };
-#endif /* ACA_ERRNO */
+#endif /* ACA_CUDA_AES_ERRNO_H */
 
-#endif	/* AU9CUDA_AES_H */
+#endif	/* ACA_CUDA_AES_COMMONS_H */
 

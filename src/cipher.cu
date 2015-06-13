@@ -2,6 +2,8 @@
 #include "key_expansion.h"
 #include "aes.h"
 
+static aca_size_t size = 4 * 4 * sizeof(aca_word_t);
+
 static void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)
 {
   aca_word_t i;
