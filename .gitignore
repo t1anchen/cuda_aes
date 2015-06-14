@@ -1,3 +1,10 @@
 *.[ao]
 *~
 src/au9aes
+*_wrap.c
+*.so
+*.a
+src/*.py
+*.pyc
+src/gdb.txt
+

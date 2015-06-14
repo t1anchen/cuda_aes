@@ -2,6 +2,10 @@
 #include "key_expansion.h"
 #include "aes.h"
 
+/* Export these 2 functions as public interface */
+extern "C" void aca_aes_encrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize);
+extern "C" void aca_aes_decrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize);
+
 static aca_size_t size = 4 * 4 * sizeof(aca_word_t);
 
 static void aca_aes_encrypt_core(aca_word_t *cp, aca_word_t *cW, aca_word_t Nr)

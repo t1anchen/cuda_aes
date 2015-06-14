@@ -4,14 +4,18 @@
 #include <errno.h>
 #include <unistd.h>
 #include "commons.h"
-#include "cipher.h"
 #include "utils.h"
+#include "cipher.h"
 #include "cuda_aes_for_py.h"
-#ifndef __AU9_AES_MAIN__
-#define __AU9_AES_MAIN__
+
+/* From utils.c */
 extern aca_size_t my_str2bytes(aca_word_t **dst, const char *src);
-extern void my_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len);
-#endif
+extern void my_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len); 
+
+/* From cipher.cu */
+extern void aca_aes_encrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize);
+extern void aca_aes_decrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize);
+
 
 int kick_off(int argc, char *argv[])
 {
