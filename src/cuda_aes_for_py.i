@@ -5,6 +5,7 @@
 %{
 #define SWIG_FILE_WITH_INIT
 #include "cuda_aes_for_py.h"
+#include "commons.h"
 #include "utils.h"
 %}
 int kick_off(int argc, char*argv[]);
