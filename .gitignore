@@ -8,3 +8,4 @@ src/*.py
 *.pyc
 src/gdb.txt
 
+cuda_py_env/*
