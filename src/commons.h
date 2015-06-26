@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <stdint.h>
 
 /* 
  * Specification of Data Presentation
