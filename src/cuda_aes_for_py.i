@@ -9,6 +9,8 @@
 #include "utils.h"
 %}
 %include "stdint.i"
+%include "carrays.i"
+%array_class(uint32_t, uint32Array)
 int kick_off(int argc, char*argv[]);
 void my_cp_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len);
 aca_size_t my_str2bytes(aca_word_t **dst, const char *src);
