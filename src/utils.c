@@ -20,10 +20,13 @@ aca_size_t my_str2bytes(aca_word_t **dst, const char *src)
 
   return len;
 }
-void my_print_hexbytes(uint32_t *bytes, uint32_t bytes_len)
+
+void 
+my_print_hexbytes(void *bytes, size_t bytes_len)
 {
-  aca_size_t i;
+  size_t i = 0;
+  uint32_t *int_buf_ptr = (uint32_t *)bytes;
   for(i = 0; i < bytes_len; i++)
-    printf("%02x", bytes[i]);
+    printf("%02x", int_buf_ptr[i]);
   printf("\n");
 }
