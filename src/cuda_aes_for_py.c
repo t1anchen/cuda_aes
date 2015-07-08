@@ -10,7 +10,7 @@
 
 /* From utils.c */
 extern aca_size_t my_str2bytes(aca_word_t **dst, const char *src);
-extern void my_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len); 
+extern void my_print_hexbytes(void *bytes, size_t bytes_len); 
 
 /* From cipher.cu */
 extern void aca_aes_encrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize);
