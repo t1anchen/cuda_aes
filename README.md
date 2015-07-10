@@ -8,10 +8,9 @@ This project is released under [The BSD 3-Clause License](http://www.opensource.
 
 ## Dependencies
 Tested on Ubuntu 14.04 LTS
-gcc >= 4.8.2
-CUDA nvcc >= 5.5
-Python >= 2.7 
-SWIG >= 2.0 
+- gcc >= 4.8.2
+- CUDA nvcc >= 5.5
+- Python >= 2.7 
 
 ### About NVIDIA CUDA Installation on Ubuntu 10.10
 1. Press `Ctrl + Alt + F1` to switch your workplace from gdm to plain txt tty
