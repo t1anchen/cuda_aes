@@ -94,4 +94,4 @@ cuda_aes_for_py.so: add_round_key.o \
 	gcc --shared -o $@ $^ -L/usr/lib/x86_64-linux-gnu -lcudart -lcuda
 
 clean:
-	rm -vf $(OBJS) $(BINS) *_wrap.c *.so *.a *.py *.pyc gdb.txt
+	rm -vf *.o $(BINS) *_wrap.c *.so *.a *.py *.pyc gdb.txt

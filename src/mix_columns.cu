@@ -1,9 +1,9 @@
 #include "aes.h"
-__global__ void aca_mix_columns(aca_word_t *state)
+__global__ void aca_mix_columns(uint32_t *state)
 {
-  aca_word_t col  = threadIdx.x;
-  aca_word_t base = col << 2;
-  aca_word_t t, Tmp, Tm;
+  uint32_t col  = threadIdx.x;
+  uint32_t base = col << 2;
+  uint32_t t, Tmp, Tm;
 
   t = state[base];
   Tmp = state[base] ^ state[base + 1] ^ state[base + 2] ^ state[base + 3];
@@ -13,12 +13,12 @@ __global__ void aca_mix_columns(aca_word_t *state)
   Tm = state[base + 3] ^ t;      Tm = xtime_byte(Tm) & 0xff; state[base + 3] ^= Tm ^ Tmp;
 }
 
-__global__ void aca_inv_mix_columns(aca_word_t *state)
+__global__ void aca_inv_mix_columns(uint32_t *state)
 {
-  aca_word_t col = threadIdx.x;
-  aca_word_t base = col << 2;
-  aca_word_t t, Tmp;
-  aca_word_t u, v, w;
+  uint32_t col = threadIdx.x;
+  uint32_t base = col << 2;
+  uint32_t t, Tmp;
+  uint32_t u, v, w;
 
   Tmp = state[base] ^ state[base + 1] ^ state[base + 2] ^ state[base + 3];
   u = xtime_byte(Tmp) & 0xff;

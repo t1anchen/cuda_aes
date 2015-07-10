@@ -1,6 +1,6 @@
 #include "aes.h"
 
-__global__ void aca_shift_rows(aca_word_t *state)
+__global__ void aca_shift_rows(uint32_t *state)
 {
   aca_size_t r = threadIdx.x;
   aca_size_t c, tmp[4];
@@ -11,7 +11,7 @@ __global__ void aca_shift_rows(aca_word_t *state)
     state[r + 4*c] = tmp[c];
 }
 
-__global__ void aca_inv_shift_rows(aca_word_t * state)
+__global__ void aca_inv_shift_rows(uint32_t * state)
 {
   aca_size_t r = threadIdx.x;
   aca_size_t c,tmp[4];

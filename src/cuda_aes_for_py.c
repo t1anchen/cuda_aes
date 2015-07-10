@@ -9,17 +9,17 @@
 #include "cuda_aes_for_py.h"
 
 /* From utils.c */
-extern aca_size_t my_str2bytes(aca_word_t **dst, const char *src);
+extern aca_size_t my_str2bytes(uint32_t **dst, const char *src);
 extern void my_print_hexbytes(void *bytes, size_t bytes_len); 
 
 /* From cipher.cu */
-extern void aca_aes_encrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize);
-extern void aca_aes_decrypt(aca_word_t *pt, aca_word_t *key, aca_word_t *ct, aca_word_t keysize);
+extern void aca_aes_encrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t keysize);
+extern void aca_aes_decrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t keysize);
 
 
 int kick_off(int argc, char *argv[])
 {
-  aca_word_t ct[16], *key, *pt, key_size, pt_size;
+  uint32_t ct[16], *key, *pt, key_size, pt_size;
   char *key_buf, *key_str, *pt_str;
   char *pt_buf;
 

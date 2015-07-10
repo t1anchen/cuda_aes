@@ -4,10 +4,10 @@
 #include "aes.tab"
 
 /* Import dependencies */
-extern void my_cp_print_hexbytes(aca_word_t *bytes, aca_size_t bytes_len);
+extern void my_cp_print_hexbytes(uint32_t *bytes, aca_size_t bytes_len);
 
 /* Implementation */
-void aca_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, aca_size_t Nk, aca_size_t Nr)
+void aca_key_expansion(uint32_t *key, aca_size_t key_len, uint32_t *W, aca_size_t Nk, aca_size_t Nr)
 {
   uint i, j, cols, temp, tmp[4];
   cols = (Nr + 1) << 2;
@@ -45,10 +45,10 @@ void aca_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, aca_s
 
 }
 
-void aca_inv_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, aca_size_t Nk, aca_size_t Nr)
+void aca_inv_key_expansion(uint32_t *key, aca_size_t key_len, uint32_t *W, aca_size_t Nk, aca_size_t Nr)
 {
   uint i, j, cols, temp, tmp[4];
-  aca_word_t *cW_tmp;
+  uint32_t *cW_tmp;
   aca_size_t cW_tmp_size;
 
   cols = (Nr + 1) << 2;
@@ -89,7 +89,7 @@ void aca_inv_key_expansion(aca_word_t *key, aca_size_t key_len, aca_word_t *W, a
    * so cW_tmp should be created here to
    * be as a temperary copy in GPU 
    */
-  cW_tmp_size = ((Nr + 1) * sizeof(aca_word_t)) << 2;
+  cW_tmp_size = ((Nr + 1) * sizeof(uint32_t)) << 2;
   cudaMalloc((void**)&cW_tmp, cW_tmp_size);
   cudaMemcpy(cW_tmp, W, cW_tmp_size, cudaMemcpyHostToDevice);
 
