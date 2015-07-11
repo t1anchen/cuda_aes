@@ -12,9 +12,11 @@ extern "C" {
 static aca_size_t size = 4 * 4 * sizeof(uint32_t);
 
 static void 
-aca_aes_encrypt_core(uint32_t *cp, uint32_t *cW, uint32_t Nr)
+aca_aes_encrypt_core(void *input_ptr, void *input_words, size_t Nr)
 {
-  uint32_t i;
+  size_t i;
+  uint32_t *cp = (uint32_t *)input_ptr;
+  uint32_t *cW = (uint32_t *)input_words;
   aca_add_round_key<<<1,16>>>(cp, cW);
   for(i = 1; i < Nr; i++) {
     aca_sub_bytes<<<1,16>>>(cp);
@@ -28,9 +30,11 @@ aca_aes_encrypt_core(uint32_t *cp, uint32_t *cW, uint32_t Nr)
 }
 
 static void 
-aca_aes_decrypt_core(uint32_t *cp, uint32_t *cW, uint32_t Nr)
+aca_aes_decrypt_core(void *input_ptr, void *input_words, size_t Nr)
 {
-  uint32_t i;
+  size_t i;
+  uint32_t *cp = (uint32_t *)input_ptr;
+  uint32_t *cW = (uint32_t *)input_words;
   aca_add_round_key<<<1,16>>>(cp, cW);
   for(i = Nr-1; i >=1; i--) {
     aca_inv_sub_bytes<<<1,16>>>(cp);
