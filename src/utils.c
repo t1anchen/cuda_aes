@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <assert.h>
 
 void my_cp_print_hexbytes(uint32_t *bytes, aca_size_t bytes_len)
 {
@@ -19,6 +20,21 @@ aca_size_t my_str2bytes(uint32_t **dst, const char *src)
     sscanf(src + i*2, "%02X", *dst + i);
 
   return len;
+}
+
+size_t
+my_str2bytearray(uint8_t dst[], size_t dst_len, const char src[], size_t src_len)
+{
+  size_t i = 0;
+  assert(dst_len == (src_len >> 1));
+
+  uint32_t c = 0;
+  for(i = 0; i < dst_len; i++) {
+    sscanf(src + i*2, "%02x", &c);
+    dst[i] = c;
+  }
+
+  return dst_len;
 }
 
 void 
