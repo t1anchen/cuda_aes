@@ -9,7 +9,7 @@
 #include "cuda_aes_for_py.h"
 
 /* From utils.c */
-extern aca_size_t my_str2bytes(uint32_t **dst, const char *src);
+extern size_t my_str2bytes(uint32_t **dst, const char *src);
 extern void my_print_hexbytes(void *bytes, size_t bytes_len); 
 
 /* From cipher.cu */

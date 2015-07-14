@@ -1,3 +1,4 @@
+import logging
 import os.path
 import zipfile
 
@@ -21,5 +22,16 @@ def read_rsp_file(aes_type='CBC',
                       zip_pkg.filelist)) > 0
     return zip_pkg.read(rsp_file_name)
 
+def get_logger(logger_name):
+    log = logging.getLogger(logger_name)
+    log.setLevel(logging.DEBUG)
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('[%(asctime)s] [%(levelname)s] %(name)s: %(message)s')
+    console_handler.setFormatter(formatter)
+    log.addHandler(console_handler)
+    return log
 
+
+    
     

@@ -11,7 +11,9 @@ void my_cp_print_hexbytes(uint32_t *bytes, aca_size_t bytes_len)
   }
   printf("\n");
 }
-aca_size_t my_str2bytes(uint32_t **dst, const char *src)
+
+size_t 
+my_str2bytes(uint32_t **dst, const char *src)
 {
   uint32_t i, len = strlen(src) >> 1;
   *dst = (uint32_t *)malloc(len * sizeof(uint32_t));
