@@ -1,9 +1,9 @@
 #include "utils.h"
 #include <assert.h>
 
-void my_cp_print_hexbytes(uint32_t *bytes, aca_size_t bytes_len)
+void my_cp_print_hexbytes(uint32_t *bytes, size_t bytes_len)
 {
-  aca_size_t i;
+  size_t i;
   for(i = 0; i < bytes_len; i++){
     printf("%02x", bytes[i]);
     if(!(i%16))
@@ -13,7 +13,7 @@ void my_cp_print_hexbytes(uint32_t *bytes, aca_size_t bytes_len)
 }
 
 size_t 
-my_str2bytes(void **dst_ref, const char *src)
+my_str2bytes(uint32_t **dst_ref, const char *src)
 {
   uint32_t i, len = strlen(src) >> 1;
   uint32_t *dst = (uint32_t *)*dst_ref;

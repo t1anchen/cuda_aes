@@ -4,10 +4,10 @@
 #include "aes.tab"
 
 /* Import dependencies */
-extern void my_cp_print_hexbytes(uint32_t *bytes, aca_size_t bytes_len);
+extern void my_cp_print_hexbytes(uint32_t *bytes, size_t bytes_len);
 
 /* Implementation */
-void aca_key_expansion(uint32_t *key, aca_size_t key_len, uint32_t *W, aca_size_t Nk, aca_size_t Nr)
+void aca_key_expansion(uint32_t *key, size_t key_len, uint32_t *W, size_t Nk, size_t Nr)
 {
   uint i, j, cols, temp, tmp[4];
   cols = (Nr + 1) << 2;
@@ -45,11 +45,11 @@ void aca_key_expansion(uint32_t *key, aca_size_t key_len, uint32_t *W, aca_size_
 
 }
 
-void aca_inv_key_expansion(uint32_t *key, aca_size_t key_len, uint32_t *W, aca_size_t Nk, aca_size_t Nr)
+void aca_inv_key_expansion(uint32_t *key, size_t key_len, uint32_t *W, size_t Nk, size_t Nr)
 {
   uint i, j, cols, temp, tmp[4];
   uint32_t *cW_tmp;
-  aca_size_t cW_tmp_size;
+  size_t cW_tmp_size;
 
   cols = (Nr + 1) << 2;
 

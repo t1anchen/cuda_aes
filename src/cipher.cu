@@ -9,7 +9,7 @@ extern "C" {
   void aca_aes_print_helloworld();
 }
 
-static aca_size_t size = 4 * 4 * sizeof(uint32_t);
+static size_t size = 4 * 4 * sizeof(uint32_t);
 
 static void 
 aca_aes_encrypt_core(void *input_ptr, void *input_words, size_t Nr)
