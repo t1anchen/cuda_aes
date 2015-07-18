@@ -10,11 +10,21 @@
 
 /* From utils.c */
 extern size_t my_str2bytes(uint32_t **dst, const char *src);
+extern size_t str2bytearray(void *buf, size_t buf_len, const char *src, size_t src_len);
 extern void my_print_hexbytes(void *bytes, size_t bytes_len); 
 
 /* From cipher.cu */
 extern void aca_aes_encrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t keysize);
 extern void aca_aes_decrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t keysize);
+
+
+/* init */
+size_t
+init_key(void *key_buf, size_t buf_len, const char *src, size_t src_len)
+{
+  memset(key_buf, 0, buf_len);
+  return str2bytearray(key_buf, buf_len, src, src_len);
+}
 
 
 int kick_off(int argc, char *argv[])

@@ -29,9 +29,11 @@ my_str2bytes(uint32_t **dst_ref, const char *src)
 }
 
 size_t
-str2bytearray(uint8_t dst[], size_t dst_len, const char src[], size_t src_len)
+str2bytearray(void *dst_buf, size_t buf_len, const char src[], size_t src_len)
 {
   size_t i = 0;
+  uint8_t *dst = (uint8_t *)dst_buf;
+  size_t dst_len = buf_len;
   assert(dst_len == (src_len >> 1));
 
   uint32_t c = 0;

@@ -9,3 +9,4 @@ src/*.py
 src/gdb.txt
 
 cuda_py_env/*
+test/KAT_AES/*
