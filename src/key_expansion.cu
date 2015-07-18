@@ -14,32 +14,34 @@ void aca_key_expansion(uint32_t *key, size_t key_len, uint32_t *W, size_t Nk, si
 
   memcpy(W, key, (key_len >> 3)*sizeof(uint));
 
-  for(i=Nk; i<cols; i++) {
-    for(j=0; j<4; j++)
+  for (i = Nk; i < cols; i++) {
+    for (j = 0; j < 4; j++)
       tmp[j] = GET(W, j, i-1);
-    if(Nk > 6) {
-      if(i % Nk == 0) {
-	temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
-	tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
-	tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
-	tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
-	tmp[3] = temp;
-      } else if(i % Nk == 4) {
-	tmp[0] = hsbox[tmp[0]];
-	tmp[1] = hsbox[tmp[1]];
-	tmp[2] = hsbox[tmp[2]];
-	tmp[3] = hsbox[tmp[3]];
+
+    if (Nk > 6) {
+      if (i % Nk == 0) {
+        temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
+        tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
+        tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
+        tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
+        tmp[3] = temp;
+      } else if (i % Nk == 4) {
+        tmp[0] = hsbox[tmp[0]];
+        tmp[1] = hsbox[tmp[1]];
+        tmp[2] = hsbox[tmp[2]];
+        tmp[3] = hsbox[tmp[3]];
       }
     } else {
-      if(i % Nk == 0) {
-	temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
-	tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
-	tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
-	tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
-	tmp[3] = temp;
+      if (i % Nk == 0) {
+        temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff);
+        tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24);
+        tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16);
+        tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8);
+        tmp[3] = temp;
       }
     }
-    for(j=0; j<4; j++)
+    
+    for (j = 0; j < 4; j++)
       GET(W, j, i) = GET(W, j, i-Nk) ^ tmp[j];
   }
 

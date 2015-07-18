@@ -18,15 +18,6 @@ extern void aca_aes_encrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t 
 extern void aca_aes_decrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t keysize);
 
 
-/* init */
-size_t
-init_key(void *key_buf, size_t buf_len, const char *src, size_t src_len)
-{
-  memset(key_buf, 0, buf_len);
-  return str2bytearray(key_buf, buf_len, src, src_len);
-}
-
-
 int kick_off(int argc, char *argv[])
 {
   uint32_t ct[16], *key, *pt, key_size, pt_size;
