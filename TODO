@@ -1,6 +1,46 @@
 # -*- mode: org -*-
-#+STARTUP: contents
-#+SEQ_TAGS: TODO(t) WORKING(w) DELAYED(y) | DONE(d) CANCELLED(c)
-#+STARTUP: hidestars
-* issue4e0dd501
-  To fix the wrong result of decryption
+# -*- mode: org -*-
+#+SEQ_TODO: TODO(t) SPECIFICATION(s) INPROGRESS(i) DEPENDENCE(D) | DONE(d) CANCELLED(c)
+#+STARTUP: hidestars content lognotedone lognoterepeat lognotereschedule lognoteredeadline lognoterefile lognoteclock-out
+#+PRIORITIES: 1 5 3 BLOCK(1) CRITICAL(2) MAJOR(3) MINOR(4) TRIVIAL(5)
+
+* Sprint 110 (0718-0731)
+** TODO [#3] ISSUE-11 Add FIPS-197 Test data                        :FEATURE:
+   - Test data could be found at http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf
+   
+** TODO [#3] ISSUE-12 Modify interfaces for cu sources              :FEATURE:
+   - [ ] Modify interfaces in key_expansion.cu
+   - [ ] Modify interfaces in sub_bytes.cu
+   - [ ] Modify interfaces in shift_rows.cu
+   - [ ] Modify interfaces in mix_columns.cu
+   - [ ] Modify interfaces in add_round_key.cu
+   - [ ] Modify interfaces in cipher.cu
+** TODO [#3] ISSUE-13 Pass all test criteria for ISSUE-12           :FEATURE:
+** DONE [#3] ISSUE-6 Change buffer interface by using 'void *'         :EPIC:
+   CLOSED: [2015-07-20 Mon 20:42]
+   - CLOSING NOTE [2015-07-20 Mon 20:42] \\
+     Elaboration completed. Picking up new cards ...
+   CLOCK: [2015-07-20 Mon 20:37]--[2015-07-20 Mon 20:40] =>  0:03
+   - Create cards for this elaborated issue
+   CLOCK: [2015-07-20 Mon 19:58]--[2015-07-20 Mon 20:29] =>  0:31
+   - Elaboration
+     - Breakdown this card into these pieces
+       - Remove deprecated code from cuda_aes_for_py
+       - Modify interfaces in key_expansion.cu
+       - Modify interfaces in sub_bytes.cu
+       - Modify interfaces in shift_rows.cu
+       - Modify interfaces in mix_columns.cu
+       - Modify interfaces in add_round_key.cu
+       - Modify interfaces in cipher.cu
+       - Refactor interfaces in cuda_aes_for_py
+     - Definition of done
+       - Print transformed data and make a comparison with Python code
+       - Use test data provided by FIPS-197
+   
+* Backlog
+** [#3] ISSUE-3 Cannot decrypt encrypted data                   :BUGFIX:EPIC:
+** [#5] ISSUE-4 Add github pages as documentation                      :EPIC:
+** [#5] ISSUE-7 Build TravisCI for continuous integration              :EPIC:
+** [#5] ISSUE-8 Change this project to cuda_crypto                     :EPIC:
+** [#5] ISSUE-9 Add enigma algorithm                                   :EPIC:
+** [#5] ISSUE-10 Add RSA algorithm                                     :EPIC:
