@@ -2,21 +2,31 @@
 #include "utils.h"
 #include "aes.h"
 #include "aes.tab"
+#include <arpa/inet.h>          /* for htonl and ntohl */
 
 /* Import dependencies */
 extern void my_cp_print_hexbytes(uint32_t *bytes, size_t bytes_len);
 
+/* Export interface */
+/* extern "C" void aca_key_expansion(uint32_t *key, size_t key_len, uint32_t *W, size_t Nk, size_t Nr); */
+
 /* Implementation */
-void aca_key_expansion(uint32_t *key, size_t key_len, uint32_t *W, size_t Nk, size_t Nr)
+void aca_key_expansion(void *key_buf, size_t key_len, void *W_buf, size_t Nk, size_t Nr)
 {
-  uint i, j, cols, temp, tmp[4];
+  size_t i, j, cols;
+  uint32_t temp, tmp[4];
+  uint32_t *key = (uint32_t *)key_buf;
+  uint32_t *W = (uint32_t *)W_buf;
   cols = (Nr + 1) << 2;
 
-  memcpy(W, key, (key_len >> 3)*sizeof(uint));
+  for (i = 0; i < Nk; i++) {
+    W[i] = key[i];
+  }
+
 
   for (i = Nk; i < cols; i++) {
     for (j = 0; j < 4; j++)
-      tmp[j] = GET(W, j, i-1);
+      tmp[j] = GET(W, j, i-1) & 0xff;
 
     if (Nk > 6) {
       if (i % Nk == 0) {
@@ -41,8 +51,8 @@ void aca_key_expansion(uint32_t *key, size_t key_len, uint32_t *W, size_t Nk, si
       }
     }
     
-    for (j = 0; j < 4; j++)
-      GET(W, j, i) = GET(W, j, i-Nk) ^ tmp[j];
+    /* for (j = 0; j < 4; j++) */
+    /*   GET(W, j, i) = (uint32_t)(GET(W, j, i-Nk) ^ tmp[j]); */
   }
 
 }
