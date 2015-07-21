@@ -31,8 +31,8 @@ static uint32_t SubWord(uint32_t src)
 
 void aca_key_expansion(void *key_buf, size_t key_len, void *W_buf, size_t Nk, size_t Nr)
 {
-  size_t i, j, cols;
-  uint32_t temp, tmp[4];
+  size_t i, cols;
+  uint32_t temp;
   uint32_t *key = (uint32_t *)key_buf;
   uint32_t *W = (uint32_t *)W_buf;
   cols = (Nr + 1) << 2;
@@ -49,37 +49,6 @@ void aca_key_expansion(void *key_buf, size_t key_len, void *W_buf, size_t Nk, si
     else if ((Nk > 6) && (i % Nk == 4))
       temp = SubWord(temp);
     W[i] = W[i-Nk] ^ temp;
-
-    /* for (j = 0; j < 4; j++) */
-    /*   tmp[j] = GET(W, j, i-1) & 0xff; */
-
-    /* if (Nk > 6) { */
-    /*   if (i % Nk == 0) { */
-    /*     temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff); */
-    /*     tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24); */
-    /*     tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16); */
-    /*     tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8); */
-    /*     tmp[3] = temp; */
-    /*   } else if (i % Nk == 4) { */
-    /*     tmp[0] = hsbox[tmp[0]]; */
-    /*     tmp[1] = hsbox[tmp[1]]; */
-    /*     tmp[2] = hsbox[tmp[2]]; */
-    /*     tmp[3] = hsbox[tmp[3]]; */
-    /*   } */
-    /* } else { */
-    /*   if (i % Nk == 0) { */
-    /*     temp   = hsbox[tmp[0]] ^  (Rcon[i/Nk] & 0x000000ff); */
-    /*     tmp[0] = hsbox[tmp[1]] ^ ((Rcon[i/Nk] & 0xff000000) >> 24); */
-    /*     tmp[1] = hsbox[tmp[2]] ^ ((Rcon[i/Nk] & 0x00ff0000) >> 16); */
-    /*     tmp[2] = hsbox[tmp[3]] ^ ((Rcon[i/Nk] & 0x0000ff00) >>  8); */
-    /*     tmp[3] = temp; */
-    /*   } */
-    /* } */
-    
-    /* for (j = 0; j < 4; j++)  */
-    /*   fprintf(stderr, "i = %u, tmp[%u] = %02p\n", i, j, tmp[j]); */
-    /* for (j = 0; j < 4; j++) */
-    /*   GET(W, j, i) = (uint32_t)(GET(W, j, i-Nk) ^ tmp[j]); */
   }
 
 }
