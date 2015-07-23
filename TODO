@@ -6,6 +6,8 @@
 
 * Sprint 110 (0718-0731)
 ** TODO [#3] ISSUE-11 Add FIPS-197 Test data                        :FEATURE:
+   CLOCK: [2015-07-23 Thu 21:16]--[2015-07-23 Thu 21:39] =>  0:23
+   - Add key_expansion for 192
    CLOCK: [2015-07-21 Tue 23:56]--[2015-07-22 Wed 00:55] =>  0:59
    - Complete testing aganist key_expansion for 128
    CLOCK: [2015-07-21 Tue 21:26]--[2015-07-21 Tue 23:56] =>  2:30
