@@ -5,7 +5,9 @@
 #+PRIORITIES: 1 5 3 BLOCK(1) CRITICAL(2) MAJOR(3) MINOR(4) TRIVIAL(5)
 
 * Sprint 110 (0718-0731)
-** TODO [#3] ISSUE-11 Add FIPS-197 Test data                        :FEATURE:
+** INPROGRESS [#3] ISSUE-11 Add FIPS-197 Test data                  :FEATURE:
+   CLOCK: [2015-07-25 Sat 20:29]--[2015-07-25 Sat 20:36] =>  0:07
+   - Add key_expansion for 256 bits
    CLOCK: [2015-07-23 Thu 21:16]--[2015-07-23 Thu 21:39] =>  0:23
    - Add key_expansion for 192
    CLOCK: [2015-07-21 Tue 23:56]--[2015-07-22 Wed 00:55] =>  0:59
