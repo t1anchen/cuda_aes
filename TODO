@@ -5,16 +5,6 @@
 #+PRIORITIES: 1 5 3 BLOCK(1) CRITICAL(2) MAJOR(3) MINOR(4) TRIVIAL(5)
 
 * Sprint 110 (0718-0731)
-** INPROGRESS [#3] ISSUE-11 Add FIPS-197 Test data                  :FEATURE:
-   CLOCK: [2015-07-25 Sat 20:29]--[2015-07-25 Sat 20:36] =>  0:07
-   - Add key_expansion for 256 bits
-   CLOCK: [2015-07-23 Thu 21:16]--[2015-07-23 Thu 21:39] =>  0:23
-   - Add key_expansion for 192
-   CLOCK: [2015-07-21 Tue 23:56]--[2015-07-22 Wed 00:55] =>  0:59
-   - Complete testing aganist key_expansion for 128
-   CLOCK: [2015-07-21 Tue 21:26]--[2015-07-21 Tue 23:56] =>  2:30
-   - Add key_expansion testing data for 128 and still being fixing
-   - Test data could be found at http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf
    
 ** TODO [#3] ISSUE-12 Modify interfaces for cu sources              :FEATURE:
    - [ ] Modify interfaces in key_expansion.cu
@@ -24,6 +14,20 @@
    - [ ] Modify interfaces in add_round_key.cu
    - [ ] Modify interfaces in cipher.cu
 ** TODO [#3] ISSUE-13 Pass all test criteria for ISSUE-12           :FEATURE:
+** DONE [#3] ISSUE-11 Add FIPS-197 Test data                        :FEATURE:
+   CLOSED: [2015-07-27 Mon 00:25]
+   - CLOSING NOTE [2015-07-27 Mon 00:25]
+   CLOCK: [2015-07-27 Mon 00:05]--[2015-07-27 Mon 00:25] =>  0:20
+   - Add aes 128, 192, 256 test data
+   CLOCK: [2015-07-25 Sat 20:29]--[2015-07-25 Sat 20:36] =>  0:07
+   - Add key_expansion for 256 bits
+   CLOCK: [2015-07-23 Thu 21:16]--[2015-07-23 Thu 21:39] =>  0:23
+   - Add key_expansion for 192
+   CLOCK: [2015-07-21 Tue 23:56]--[2015-07-22 Wed 00:55] =>  0:59
+   - Complete testing aganist key_expansion for 128
+   CLOCK: [2015-07-21 Tue 21:26]--[2015-07-21 Tue 23:56] =>  2:30
+   - Add key_expansion testing data for 128 and still being fixing
+   - Test data could be found at http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf
 ** DONE [#3] ISSUE-6 Change buffer interface by using 'void *'         :EPIC:
    CLOSED: [2015-07-20 Mon 20:42]
    - CLOSING NOTE [2015-07-20 Mon 20:42] \\
