@@ -53,8 +53,11 @@ void aca_key_expansion(void *key_buf, size_t key_len, void *W_buf, size_t Nk, si
 
 }
 
-void aca_inv_key_expansion(uint32_t *key, size_t key_len, uint32_t *W, size_t Nk, size_t Nr)
+/* NOTE: This function would be deprecated */
+void aca_inv_key_expansion(void *key_buf, size_t key_len, void *W_buf, size_t Nk, size_t Nr)
 {
+  uint32_t *key = (uint32_t *)key_buf;
+  uint32_t *W = (uint32_t *)W_buf;
   uint i, j, cols, temp, tmp[4];
   uint32_t *cW_tmp;
   size_t cW_tmp_size;
