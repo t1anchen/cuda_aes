@@ -21,7 +21,8 @@
    - [X] Modify interfaces in sub_bytes.cu
    CLOCK: [2015-07-28 Tue 22:04]--[2015-07-28 Tue 22:08] =>  0:04
    - [X] Modify interfaces in key_expansion.cu
-** TODO [#3] ISSUE-13 Pass all test criteria for ISSUE-12           :FEATURE:
+** INPROGRESS [#3] ISSUE-13 Pass all test criteria for ISSUE-12     :FEATURE:
+   CLOCK: [2015-07-30 Thu 00:00]--[2015-07-30 Thu 00:15] =>  0:15
 ** DONE [#3] ISSUE-11 Add FIPS-197 Test data                        :FEATURE:
    CLOSED: [2015-07-27 Mon 00:25]
    - CLOSING NOTE [2015-07-27 Mon 00:25]
