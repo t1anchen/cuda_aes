@@ -11,5 +11,5 @@ __global__ void aca_shift_rows(void *state);
 __global__ void aca_inv_shift_rows(void * state);
 __global__ void aca_mix_columns(void *state);
 __global__ void aca_inv_mix_columns(void *state);
-__global__ void aca_add_round_key(uint32_t *state, uint32_t *key);
+__global__ void aca_add_round_key(void *state, void *key);
 #endif /* ACA_CUDA_AES_ACTIONS_H */

@@ -6,7 +6,13 @@
 
 * Sprint 110 (0718-0731)
    
-** INPROGRESS [#3] ISSUE-12 Modify interfaces for cu sources        :FEATURE:
+** DONE [#3] ISSUE-12 Modify interfaces for cu sources              :FEATURE:
+   CLOSED: [2015-07-29 Wed 12:52]
+   - CLOSING NOTE [2015-07-29 Wed 12:52]
+   CLOCK: [2015-07-29 Wed 12:32]--[2015-07-29 Wed 12:52] =>  0:20
+   - [X] Modify interfaces in cipher.cu
+   CLOCK: [2015-07-29 Wed 12:30]--[2015-07-29 Wed 12:32] =>  0:02
+   - [X] Modify interfaces in add_round_key.cu
    CLOCK: [2015-07-28 Tue 22:20]--[2015-07-28 Tue 22:23] =>  0:03
    - [X] Modify interfaces in mix_columns.cu
    CLOCK: [2015-07-28 Tue 22:18]--[2015-07-28 Tue 22:20] =>  0:02
@@ -15,8 +21,6 @@
    - [X] Modify interfaces in sub_bytes.cu
    CLOCK: [2015-07-28 Tue 22:04]--[2015-07-28 Tue 22:08] =>  0:04
    - [X] Modify interfaces in key_expansion.cu
-   - [ ] Modify interfaces in add_round_key.cu
-   - [ ] Modify interfaces in cipher.cu
 ** TODO [#3] ISSUE-13 Pass all test criteria for ISSUE-12           :FEATURE:
 ** DONE [#3] ISSUE-11 Add FIPS-197 Test data                        :FEATURE:
    CLOSED: [2015-07-27 Mon 00:25]

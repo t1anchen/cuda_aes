@@ -4,8 +4,8 @@
 
 /* Export these functions as public interface */
 extern "C" {
-  void aca_aes_encrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t keysize);
-  void aca_aes_decrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t keysize);
+  void aca_aes_encrypt(void *pt, void *key, void *ct, size_t keysize);
+  void aca_aes_decrypt(void *pt, void *key, void *ct, size_t keysize);
   void aca_aes_print_helloworld();
 }
 
@@ -48,30 +48,41 @@ aca_aes_decrypt_core(void *input_ptr, void *input_words, size_t Nr)
 }
 
 void 
-aca_aes_encrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t keysize)
+aca_aes_encrypt(void *pt, void *key, void *ct, size_t keysize)
 {
-  uint32_t *cp, *W, *cW, Nk, Nr;
+  uint32_t *cp, *W, *cW;
+  size_t Nk, Nr;
   Nk = keysize >> 5;
   Nr = Nk + 6;
 
-  uint32_t s = ((Nr+1) * sizeof(uint32_t)) << 4;
-  W = (uint32_t *)malloc(s);
-  cudaMalloc((void**)&cW, s);
-  aca_key_expansion(key, keysize, W, Nk, Nr);
-  cudaMemcpy(cW, W, s, cudaMemcpyHostToDevice);
+  size_t block_len = ((Nr+1) * sizeof(uint32_t)) << 4; /* 4*(Nr+1) words */
 
+  /* Allocate memory for key both host buffer and device buffer */
+  W = (uint32_t *)malloc(block_len);
+  cudaMalloc((void**)&cW, block_len);
+
+  /* Key expansion (on host)*/
+  aca_key_expansion(key, keysize, W, Nk, Nr);
+
+  /* Move key to device */
+  cudaMemcpy(cW, W, block_len, cudaMemcpyHostToDevice);
+
+  /* Allocate momery for encrypted message buffer (only 128) */
   cudaMalloc((void**)&cp, size);
   cudaMemcpy(cp, pt, size, cudaMemcpyHostToDevice);
 
+  /* Encrypt */
   aca_aes_encrypt_core(cp, cW, Nr);
 
+  /* Move cipher to host (only 128) */
   cudaMemcpy(ct, cp, size, cudaMemcpyDeviceToHost);
 }
 
 void 
-aca_aes_decrypt(uint32_t *pt, uint32_t *key, uint32_t *ct, uint32_t keysize)
+aca_aes_decrypt(void *pt, void *key, void *ct, size_t keysize)
 {
-  uint32_t *cp, *W, *cW, Nk, Nr;
+  uint32_t *cp, *W, *cW;
+  size_t Nk, Nr;
   Nk = keysize >> 5;
   Nr = Nk + 6;
 
