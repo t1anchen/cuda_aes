@@ -1,0 +1,67 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file /home/au9ustine/projects/org.au9ustine.cuda.aes/TODO
+
+
+* Sprint 110 (0718-0731)
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2015-08-02 Sun 21:53
+  :ARCHIVE_FILE: ~/projects/org.au9ustine.cuda.aes/TODO
+  :ARCHIVE_CATEGORY: TODO
+  :END:
+   
+** DONE [#3] ISSUE-12 Modify interfaces for cu sources              :FEATURE:
+   CLOSED: [2015-07-29 Wed 12:52]
+   - CLOSING NOTE [2015-07-29 Wed 12:52]
+   CLOCK: [2015-07-29 Wed 12:32]--[2015-07-29 Wed 12:52] =>  0:20
+   - [X] Modify interfaces in cipher.cu
+   CLOCK: [2015-07-29 Wed 12:30]--[2015-07-29 Wed 12:32] =>  0:02
+   - [X] Modify interfaces in add_round_key.cu
+   CLOCK: [2015-07-28 Tue 22:20]--[2015-07-28 Tue 22:23] =>  0:03
+   - [X] Modify interfaces in mix_columns.cu
+   CLOCK: [2015-07-28 Tue 22:18]--[2015-07-28 Tue 22:20] =>  0:02
+   - [X] Modify interfaces in shift_rows.cu
+   CLOCK: [2015-07-28 Tue 22:08]--[2015-07-28 Tue 22:17] =>  0:09
+   - [X] Modify interfaces in sub_bytes.cu
+   CLOCK: [2015-07-28 Tue 22:04]--[2015-07-28 Tue 22:08] =>  0:04
+   - [X] Modify interfaces in key_expansion.cu
+** DONE [#3] ISSUE-13 Pass all test criteria for ISSUE-12           :FEATURE:
+   CLOSED: [2015-08-02 Sun 21:53]
+   - CLOSING NOTE [2015-08-02 Sun 21:53]
+   CLOCK: [2015-07-30 Thu 00:00]--[2015-07-30 Thu 00:15] =>  0:15
+** DONE [#3] ISSUE-11 Add FIPS-197 Test data                        :FEATURE:
+   CLOSED: [2015-07-27 Mon 00:25]
+   - CLOSING NOTE [2015-07-27 Mon 00:25]
+   CLOCK: [2015-07-27 Mon 00:05]--[2015-07-27 Mon 00:25] =>  0:20
+   - Add aes 128, 192, 256 test data
+   CLOCK: [2015-07-25 Sat 20:29]--[2015-07-25 Sat 20:36] =>  0:07
+   - Add key_expansion for 256 bits
+   CLOCK: [2015-07-23 Thu 21:16]--[2015-07-23 Thu 21:39] =>  0:23
+   - Add key_expansion for 192
+   CLOCK: [2015-07-21 Tue 23:56]--[2015-07-22 Wed 00:55] =>  0:59
+   - Complete testing aganist key_expansion for 128
+   CLOCK: [2015-07-21 Tue 21:26]--[2015-07-21 Tue 23:56] =>  2:30
+   - Add key_expansion testing data for 128 and still being fixing
+   - Test data could be found at http://csrc.nist.gov/publications/fips/fips197/fips-197.pdf
+** DONE [#3] ISSUE-6 Change buffer interface by using 'void *'         :EPIC:
+   CLOSED: [2015-07-20 Mon 20:42]
+   - CLOSING NOTE [2015-07-20 Mon 20:42] \\
+     Elaboration completed. Picking up new cards ...
+   CLOCK: [2015-07-20 Mon 20:37]--[2015-07-20 Mon 20:40] =>  0:03
+   - Create cards for this elaborated issue
+   CLOCK: [2015-07-20 Mon 19:58]--[2015-07-20 Mon 20:29] =>  0:31
+   - Elaboration
+     - Breakdown this card into these pieces
+       - Remove deprecated code from cuda_aes_for_py
+       - Modify interfaces in key_expansion.cu
+       - Modify interfaces in sub_bytes.cu
+       - Modify interfaces in shift_rows.cu
+       - Modify interfaces in mix_columns.cu
+       - Modify interfaces in add_round_key.cu
+       - Modify interfaces in cipher.cu
+       - Refactor interfaces in cuda_aes_for_py
+     - Definition of done
+       - Print transformed data and make a comparison with Python code
+       - Use test data provided by FIPS-197
+   
