@@ -5,9 +5,6 @@
 #+PRIORITIES: 1 5 3 BLOCK(1) CRITICAL(2) MAJOR(3) MINOR(4) TRIVIAL(5)
 
 * Sprint 111 (0801-0814)
-** [#4] ISSUE-17 Decrypt 128 bit                                    :FEATURE:
-** [#4] ISSUE-14 Encrypt 128 bit                                    :FEATURE:
-   - DoD: Pass testing of 128
 ** DONE [#3] ISSUE-3 Cannot decrypt encrypted data              :BUGFIX:EPIC:
    CLOSED: [2015-08-02 Sun 22:25]
    - CLOSING NOTE [2015-08-02 Sun 22:25]
@@ -15,8 +12,11 @@
    - Complete elaboration of this card and create bunch of new cards
      for breaking down this epic.
 * Backlog
+** [#4] ISSUE-14 Encrypt 128 bit                                    :FEATURE:
+   - DoD: Pass testing of 128
 ** [#4] ISSUE-15 Encrypt 192 bit                                    :FEATURE:
 ** [#4] ISSUE-16 Encrypt 256 bit                                    :FEATURE:
+** [#4] ISSUE-17 Decrypt 128 bit                                    :FEATURE:
 ** [#4] ISSUE-18 Decrypt 192 bit                                    :FEATURE:
 ** [#4] ISSUE-19 Decrypt 256 bit                                    :FEATURE:
 ** [#4] ISSUE-20 Add CBC Mode                                       :FEATURE:
